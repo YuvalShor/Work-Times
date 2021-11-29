@@ -5,10 +5,13 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LoginInputs from "../components/logininputs";
+import AlertDialog from "../components/alertdialog";
 
 export default function Login() {
   const [formInputs, setFormInputs] = useState({ phone: "", password: "" });
   const [helperText, setHelperText] = useState("e.g.: 0501234567");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogText, setDialogText] = useState("");
 
   function resetForm() {
     setFormInputs({ phone: "", password: "" });
@@ -38,12 +41,27 @@ export default function Login() {
       if (res.status === 201) {
         router.push("/employee");
       } else {
-        alert(
+        setDialogText(
           "Phone number and password combination couldn't be found in the database"
         );
+        handleOpenDialog();
       }
     } catch (error) {
-      console.log(error);
+      setDialogText(error);
+      handleOpenDialog();
+    }
+  }
+
+  function handleOpenDialog() {
+    setDialogOpen(true);
+  }
+
+  function handleCloseDialog() {
+    setDialogOpen(false);
+    setDialogText("");
+
+    if (dialogText.includes("created successfully")) {
+      router.push("/employer");
     }
   }
 
@@ -106,6 +124,11 @@ export default function Login() {
             <Button variant="contained" onClick={resetForm} color="error">
               Reset
             </Button>
+            <AlertDialog
+              dialogOpen={dialogOpen}
+              dialogText={dialogText}
+              handleCloseDialog={handleCloseDialog}
+            />
           </div>
         </Grid>
       </Grid>

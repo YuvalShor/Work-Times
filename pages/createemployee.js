@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import LoginInputs from "../components/logininputs";
+import AlertDialog from "../components/alertdialog";
 
 export default function CreateEmployee() {
   const [formInputs, setFormInputs] = useState({
@@ -15,6 +16,9 @@ export default function CreateEmployee() {
     lastname: "",
   });
   const [helperText, setHelperText] = useState("e.g.: 0501234567");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogText, setDialogText] = useState("");
+  const router = useRouter();
 
   function updateFormInputs(e) {
     setFormInputs((formInputs) => ({
@@ -26,8 +30,6 @@ export default function CreateEmployee() {
   function resetForm() {
     setFormInputs({ phone: "", password: "", firstname: "", lastname: "" });
   }
-
-  const router = useRouter();
 
   function submitForm(e) {
     const re = /^[0-9\b]{10}$/;
@@ -54,21 +56,35 @@ export default function CreateEmployee() {
       });
 
       if (res.status === 201) {
-        alert(
+        setDialogText(
           "New employee " +
             formInputs.firstname +
             " " +
             formInputs.lastname +
             " has been created successfully"
         );
-        router.push("/employer");
+        handleOpenDialog();
       } else {
-        alert(
+        setDialogText(
           "An employee already exists with the phone number " + formInputs.phone
         );
+        handleOpenDialog();
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  function handleOpenDialog() {
+    setDialogOpen(true);
+  }
+
+  function handleCloseDialog() {
+    setDialogOpen(false);
+    setDialogText("");
+
+    if (dialogText.includes("created successfully")) {
+      router.push("/employer");
     }
   }
 
@@ -147,6 +163,11 @@ export default function CreateEmployee() {
             <Button variant="contained" onClick={resetForm} color="error">
               Reset
             </Button>
+            <AlertDialog
+              dialogOpen={dialogOpen}
+              dialogText={dialogText}
+              handleCloseDialog={handleCloseDialog}
+            />
           </div>
         </Grid>
       </Grid>
