@@ -7,15 +7,6 @@ export default async (req, res) => {
   await dbConnect();
 
   switch (method) {
-    case "GET":
-      try {
-        const employees = await Employee.find({});
-        res.status(200).json({ success: true, data: employees });
-      } catch (error) {
-        res.status(400).json({ success: false });
-      }
-
-      break;
     case "POST":
       try {
         const employee = await Employee.findOne({ phone: req.body.phone });

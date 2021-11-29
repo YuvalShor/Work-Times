@@ -21,7 +21,7 @@ const employeeSchema = new mongoose.Schema({
     required: [true, "Please add a last name"],
   },
   monthlyhours: {
-    type: mongoose.Decimal128,
+    type: Number,
     default: 0,
   },
   monthlysessions: {
