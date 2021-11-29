@@ -20,6 +20,10 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a last name"],
   },
+  month: {
+    type: Number,
+    default: 0,
+  },
   monthlyhours: {
     type: Number,
     default: 0,

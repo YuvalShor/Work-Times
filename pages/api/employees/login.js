@@ -28,8 +28,8 @@ export default async (req, res) => {
           res.status(201).json({
             success: true,
             phone: req.body.phone,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            firstname: employee.firstname,
+            lastname: employee.lastname,
           });
         }
       } catch (error) {

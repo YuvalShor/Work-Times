@@ -6,6 +6,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LoginInputs from "../components/logininputs";
 import AlertDialog from "../components/alertdialog";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 export default function Login() {
   const [formInputs, setFormInputs] = useState({ phone: "", password: "" });
@@ -38,14 +41,22 @@ export default function Login() {
         body: JSON.stringify(formInputs),
       });
 
-      if (res.status === 201) {
-        router.push("/employee");
-      } else {
-        setDialogText(
-          "Phone number and password combination couldn't be found in the database"
-        );
-        handleOpenDialog();
-      }
+      res.json().then((data) => {
+        if (data.success) {
+          cookies.set(
+            "user",
+            [data.phone, data.firstname + " " + data.lastname],
+            { path: "/" }
+          );
+
+          router.push("/employee");
+        } else {
+          setDialogText(
+            "Phone number and password combination couldn't be found in the database"
+          );
+          handleOpenDialog();
+        }
+      });
     } catch (error) {
       setDialogText(error);
       handleOpenDialog();
