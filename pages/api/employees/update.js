@@ -24,11 +24,9 @@ export default async (req, res) => {
             employee.monthlyhours++;
           }
         } else {
-            console.log(req.body.newsession);
-
-            if (req.body.newsession) {
-              employee.monthlysessions++;
-            }
+          if (req.body.newsession) {
+            employee.monthlysessions++;
+          }
         }
 
         if (employee.save()) {

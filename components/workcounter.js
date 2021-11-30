@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const WorkCounter = () => {
+const WorkCounter = ({currentSessionTime}) => {
   const [buttonValue, setButtonValue] = useState("Start Working");
   const [timerValue, setTimerValue] = useState(new Date(0, 0));
   const [isActive, setIsActive] = useState(false);
@@ -25,6 +25,8 @@ const WorkCounter = () => {
       setTimerValue(
         new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
       );
+
+      currentSessionTime = timerValue;
 
       updateHours();
     }, 1000);
