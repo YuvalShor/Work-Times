@@ -1,5 +1,5 @@
 import dbConnect from "../../utils/dbConnect";
-import Employee from "../../../models/employeeModel";
+import EmployeeModel from "../../../models/employeeModel";
 import bcrypt from "bcryptjs";
 
 export default async (req, res) => {
@@ -10,7 +10,7 @@ export default async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        const employee = await Employee.findOne({ phone: req.body.phone });
+        const employee = await EmployeeModel.findOne({ phone: req.body.phone });
         console.log("trying to find if the user exists...");
 
         const passwordsMatch = await employee.comparePassword(

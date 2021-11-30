@@ -1,5 +1,5 @@
 import dbConnect from "../../utils/dbConnect";
-import Employee from "../../../models/employeeModel";
+import EmployeeModel from "../../../models/employeeModel";
 
 export default async (req, res) => {
   const { method } = req;
@@ -9,7 +9,7 @@ export default async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        const employees = await Employee.find({});
+        const employees = await EmployeeModel.find({});
 
         if (!employees) {
           res.status(400).json({ success: false });

@@ -1,5 +1,5 @@
 import dbConnect from "../../utils/dbConnect";
-import Employee from "../../../models/employeeModel";
+import EmployeeModel from "../../../models/employeeModel";
 
 export default async (req, res) => {
   const { method } = req;
@@ -9,8 +9,8 @@ export default async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        const employee = await Employee.findOne({ phone: req.body.phone });
-        
+        const employee = await EmployeeModel.findOne({ phone: req.body.phone });
+
         if (req.body.hours) {
           const currentMonth = new Date().getMonth();
 

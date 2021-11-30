@@ -4,6 +4,6 @@
 
 import Login from "./login";
 
-export default function Home() {
-  return <Login />;
-}
+const Home = () => <Login />;
+
+export default Home;

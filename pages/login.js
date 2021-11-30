@@ -10,29 +10,29 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export default function Login() {
+const Login = () => {
   const [formInputs, setFormInputs] = useState({ phone: "", password: "" });
   const [helperText, setHelperText] = useState("e.g.: 0501234567");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogText, setDialogText] = useState("");
 
-  function resetForm() {
+  const resetForm = () => {
     setFormInputs({ phone: "", password: "" });
-  }
+  };
 
   const router = useRouter();
 
-  function submitForm(e) {
+  const submitForm = (e) => {
     const re = /^[0-9\b]{10}$/;
 
     if (re.test(formInputs.phone) && formInputs.password) {
       attemptLogin();
     }
-  }
+  };
 
-  async function attemptLogin() {
+  const attemptLogin = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/employees/login", {
+      const res = await fetch("/api/employees/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -41,27 +41,27 @@ export default function Login() {
         body: JSON.stringify(formInputs),
       });
 
-      res.json().then((data) => {
-        if (data.success) {
-          cookies.set(
-            "user",
-            [data.phone, data.firstname + " " + data.lastname],
-            { path: "/" }
-          );
+      const response = await res.json();
 
-          router.push("/employee");
-        } else {
-          setDialogText(
-            "Phone number and password combination couldn't be found in the database"
-          );
-          handleOpenDialog();
-        }
-      });
+      if (response.success) {
+        cookies.set(
+          "user",
+          [response.phone, response.firstname + " " + response.lastname],
+          { path: "/" }
+        );
+
+        router.push("/employee");
+      } else {
+        setDialogText(
+          "Phone number and password combination couldn't be found in the database"
+        );
+        handleOpenDialog();
+      }
     } catch (error) {
       setDialogText(error);
       handleOpenDialog();
     }
-  }
+  };
 
   function handleOpenDialog() {
     setDialogOpen(true);
@@ -145,4 +145,6 @@ export default function Login() {
       </Grid>
     </div>
   );
-}
+};
+
+export default Login;

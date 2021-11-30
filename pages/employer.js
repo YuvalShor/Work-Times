@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
 
-export default function Employee() {
+const Employer = () => {
   const router = useRouter();
   const createEmployee = () => {
     router.push("/createemployee");
@@ -32,4 +32,6 @@ export default function Employee() {
       </div>
     </div>
   );
-}
+};
+
+export default Employer;

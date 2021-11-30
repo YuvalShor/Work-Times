@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export default function WorkCounter() {
+const WorkCounter = () => {
   const [buttonValue, setButtonValue] = useState("Start Working");
   const [timerValue, setTimerValue] = useState(new Date(0, 0));
   const [isActive, setIsActive] = useState(false);
@@ -22,15 +22,11 @@ export default function WorkCounter() {
   useEffect(() => {
     if (!isActive) return;
     let intervalID = setInterval(() => {
-      //   const prevHours = timerValue.getHours();
-
       setTimerValue(
         new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
       );
 
-      //   if (timerValue.getHours() > prevHours) {
       updateHours();
-      //   }
     }, 1000);
 
     return () => {
@@ -40,9 +36,9 @@ export default function WorkCounter() {
 
   useEffect(() => {
     if (!newSession) return;
-    async function updateNewSession() {
+    const updateNewSession = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/employees/update", {
+        const res = await fetch("/api/employees/update", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -59,13 +55,13 @@ export default function WorkCounter() {
         console.log(JSON.stringify(loggedInEmployee));
         console.log(error);
       }
-    }
+    };
     updateNewSession();
   }, [isActive]);
 
-  async function updateHours() {
+  const updateHours = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/employees/update", {
+      const res = await fetch("/api/employees/update", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -80,9 +76,9 @@ export default function WorkCounter() {
       console.log(JSON.stringify(loggedInEmployee));
       console.log(error);
     }
-  }
+  };
 
-  function toggleButtonState() {
+  const toggleButtonState = () => {
     setIsActive(!isActive);
 
     if (buttonValue === "Start Working") {
@@ -90,7 +86,7 @@ export default function WorkCounter() {
     } else {
       setButtonValue("Start Working");
     }
-  }
+  };
 
   return (
     <div
@@ -140,4 +136,6 @@ export default function WorkCounter() {
       </div>
     </div>
   );
-}
+};
+
+export default WorkCounter;

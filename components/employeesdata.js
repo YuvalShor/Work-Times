@@ -10,52 +10,29 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(
-  phone,
-  firstName,
-  lastName,
-  monthlyHours,
-  monthlySessions,
-  workingStatus
-) {
-  return {
-    phone,
-    firstName,
-    lastName,
-    monthlyHours,
-    monthlySessions,
-    workingStatus,
-  };
-}
-
-export default function EmployeesData() {
+const EmployeesData = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     getEmployeesData();
   }, []);
 
-  async function getEmployeesData() {
+  const getEmployeesData = async () => {
     try {
-      await fetch("http://localhost:3000/api/employees", {
+      const res = await fetch("/api/employees", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.json())
-        .then((result) => {
-          (element) => {
-            createData(element);
-          };
+      });
 
-          setRows(result.data);
-        });
+      const { data: employeesRows } = await res.json();
+      setRows(employeesRows);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -109,4 +86,6 @@ export default function EmployeesData() {
       </div>
     </div>
   );
-}
+};
+
+export default EmployeesData;

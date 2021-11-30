@@ -1,11 +1,11 @@
 import WorkCounter from "../components/workcounter";
 import WorkSummary from "../components/worksummary";
 
-export default function Employee() {
-  return (
-    <div>
-      <WorkCounter />
-      <WorkSummary />
-    </div>
-  );
-}
+const Employee = () => (
+  <div>
+    <WorkCounter />
+    <WorkSummary />
+  </div>
+);
+
+export default Employee;

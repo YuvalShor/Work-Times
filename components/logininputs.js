@@ -9,7 +9,7 @@ const LoginInputs = ({
 }) => {
   const re = /^[0-9\b]{0,10}$/;
 
-  function updateFormInputs(e) {
+  const updateFormInputs = (e) => {
     if (e.target?.name === "phone") {
       if (re.test(e.target?.value)) {
         setFormInputs((formInputs) => ({
@@ -26,9 +26,9 @@ const LoginInputs = ({
         [e.target?.name]: e.target?.value,
       }));
     }
-  }
+  };
 
-  function changeHelperText(valid) {
+  const changeHelperText = (valid) => {
     if (!valid) {
       setHelperText("Only use digits, can't exceed 10 digits");
       setTimeout(() => {
@@ -37,7 +37,7 @@ const LoginInputs = ({
     } else {
       setHelperText("e.g.: 0501234567");
     }
-  }
+  };
 
   return (
     <div>

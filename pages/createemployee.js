@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import LoginInputs from "../components/logininputs";
 import AlertDialog from "../components/alertdialog";
 
-export default function CreateEmployee() {
+const CreateEmployee = () => {
   const [formInputs, setFormInputs] = useState({
     phone: "",
     password: "",
@@ -20,18 +20,18 @@ export default function CreateEmployee() {
   const [dialogText, setDialogText] = useState("");
   const router = useRouter();
 
-  function updateFormInputs(e) {
+  const updateFormInputs = (e) => {
     setFormInputs((formInputs) => ({
       ...formInputs,
       [e.target?.name]: e.target?.value,
     }));
-  }
+  };
 
-  function resetForm() {
+  const resetForm = () => {
     setFormInputs({ phone: "", password: "", firstname: "", lastname: "" });
-  }
+  };
 
-  function submitForm(e) {
+  const submitForm = (e) => {
     const re = /^[0-9\b]{10}$/;
 
     if (
@@ -42,11 +42,11 @@ export default function CreateEmployee() {
     ) {
       createEmployee();
     }
-  }
+  };
 
-  async function createEmployee() {
+  const createEmployee = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/employees/create", {
+      const res = await fetch("/api/employees/create", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -73,20 +73,20 @@ export default function CreateEmployee() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  function handleOpenDialog() {
+  const handleOpenDialog = () => {
     setDialogOpen(true);
-  }
+  };
 
-  function handleCloseDialog() {
+  const handleCloseDialog = () => {
     setDialogOpen(false);
     setDialogText("");
 
     if (dialogText.includes("created successfully")) {
       router.push("/employer");
     }
-  }
+  };
 
   return (
     <div>
@@ -173,4 +173,6 @@ export default function CreateEmployee() {
       </Grid>
     </div>
   );
-}
+};
+
+export default CreateEmployee;
