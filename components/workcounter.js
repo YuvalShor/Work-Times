@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -15,47 +15,53 @@ export default function WorkCounter() {
   const [buttonValue, setButtonValue] = useState("Start Working");
   const [timerValue, setTimerValue] = useState(new Date(0, 0));
   const [isActive, setIsActive] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [newSession, setNewSession] = useState(true);
-  const countRef = useRef(null);
 
   const loggedInEmployee = cookies.get("user");
 
-  const handleStart = () => {
-    setIsActive(true);
-    setIsPaused(false);
-    countRef.current = setInterval(() => {
-      const prevHours = timerValue.getHours();
+  useEffect(() => {
+    if (!isActive) return;
+    let intervalID = setInterval(() => {
+      //   const prevHours = timerValue.getHours();
 
       setTimerValue(
         new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
       );
 
-      if (timerValue.getHours() > prevHours) {
-        updateHours();
-      }
+      //   if (timerValue.getHours() > prevHours) {
+      updateHours();
+      //   }
     }, 1000);
-  };
 
-  const handlePause = () => {
-    clearInterval(countRef.current);
-    setIsPaused(true);
-  };
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [isActive]);
 
-  const handleResume = () => {
-    setIsPaused(false);
-    countRef.current = setInterval(() => {
-      const prevHours = timerValue.getHours();
+  useEffect(() => {
+    if (!newSession) return;
+    async function updateNewSession() {
+      try {
+        const res = await fetch("http://localhost:3000/api/employees/update", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone: loggedInEmployee[0],
+            newsession: newSession,
+          }),
+        });
 
-      setTimerValue(
-        new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
-      );
-
-      if (timerValue.getHours() > prevHours) {
-        updateHours();
+        setNewSession(false);
+      } catch (error) {
+        console.log(JSON.stringify(loggedInEmployee));
+        console.log(error);
       }
-    }, 1000);
-  };
+    }
+    updateNewSession();
+  }, [isActive]);
 
   async function updateHours() {
     try {
@@ -68,12 +74,7 @@ export default function WorkCounter() {
         body: JSON.stringify({
           phone: loggedInEmployee[0],
           hours: timerValue.getHours(),
-          newsession: newSession,
         }),
-      }).then((res) => {
-        if (res.status === 201 && newSession) {
-          setNewSession(false);
-        }
       });
     } catch (error) {
       console.log(JSON.stringify(loggedInEmployee));
@@ -81,21 +82,13 @@ export default function WorkCounter() {
     }
   }
 
-  function changeButtonState() {
+  function toggleButtonState() {
+    setIsActive(!isActive);
+
     if (buttonValue === "Start Working") {
       setButtonValue("Pause Working");
-
-      if (!isPaused) {
-        handleStart();
-      } else {
-        handleResume();
-      }
     } else {
       setButtonValue("Start Working");
-
-      if (isActive) {
-        handlePause();
-      }
     }
   }
 
@@ -123,7 +116,7 @@ export default function WorkCounter() {
           <Grid item style={{ height: "2%", margin: "auto" }}>
             <Button
               variant="contained"
-              onClick={changeButtonState}
+              onClick={toggleButtonState}
               color={buttonValue === "Start Working" ? "success" : "primary"}
             >
               {buttonValue}

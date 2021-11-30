@@ -10,20 +10,25 @@ export default async (req, res) => {
     case "POST":
       try {
         const employee = await Employee.findOne({ phone: req.body.phone });
-        const currentMonth = new Date().getMonth();
+        
+        if (req.body.hours) {
+          const currentMonth = new Date().getMonth();
 
-        if (!employee) {
-          res.status(400).json({ success: false });
-        } else if (employee.month != currentMonth) {
-          employee.month = currentMonth;
-          employee.monthlysessions = 1;
-          employee.monthlyhours = req.body.hours;
-        } else {
-          employee.monthlyhours++;
-
-          if (req.body.newsession) {
-            employee.monthlysessions++;
+          if (!employee) {
+            res.status(400).json({ success: false });
+          } else if (employee.month != currentMonth) {
+            employee.month = currentMonth;
+            employee.monthlysessions = 1;
+            employee.monthlyhours = req.body.hours;
+          } else {
+            employee.monthlyhours++;
           }
+        } else {
+            console.log(req.body.newsession);
+
+            if (req.body.newsession) {
+              employee.monthlysessions++;
+            }
         }
 
         if (employee.save()) {
