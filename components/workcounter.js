@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -11,9 +11,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const WorkCounter = ({currentSessionTime}) => {
+const WorkCounter = ({ timerValue, setTimerValue }) => {
   const [buttonValue, setButtonValue] = useState("Start Working");
-  const [timerValue, setTimerValue] = useState(new Date(0, 0));
   const [isActive, setIsActive] = useState(false);
   const [newSession, setNewSession] = useState(true);
 
@@ -25,8 +24,6 @@ const WorkCounter = ({currentSessionTime}) => {
       setTimerValue(
         new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
       );
-
-      currentSessionTime = timerValue;
 
       updateHours();
     }, 1000);
@@ -47,7 +44,8 @@ const WorkCounter = ({currentSessionTime}) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            phone: loggedInEmployee[0],
+            phone: loggedInEmployee["phone"],
+            hours: timerValue.getHours(),
             newsession: newSession,
           }),
         });
@@ -70,7 +68,7 @@ const WorkCounter = ({currentSessionTime}) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          phone: loggedInEmployee[0],
+          phone: loggedInEmployee["phone"],
           hours: timerValue.getHours(),
         }),
       });
@@ -102,16 +100,9 @@ const WorkCounter = ({currentSessionTime}) => {
         <Grid
           container
           direction="column"
-          style={{ height: "20vh", marginTop: "100%" }}
+          style={{ height: "15vh", width: "100%" }}
         >
-          <Grid item style={{ height: "2%", margin: "auto" }}>
-            <Typography variant="h3" component="div">
-              Hello{" "}
-              {loggedInEmployee != null ? loggedInEmployee[1] : "Employee"}!
-            </Typography>
-          </Grid>
-
-          <Grid item style={{ height: "2%", margin: "auto" }}>
+          <Grid item style={{ height: "2vh", margin: "auto", marginTop: "5%" }}>
             <Button
               variant="contained"
               onClick={toggleButtonState}

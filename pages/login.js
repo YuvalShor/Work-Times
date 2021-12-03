@@ -11,7 +11,10 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const Login = () => {
-  const [formInputs, setFormInputs] = useState({ phone: "", password: "" });
+  const [formInputs, setFormInputs] = useState({
+    phone: "",
+    password: "",
+  });
   const [helperText, setHelperText] = useState("e.g.: 0501234567");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogText, setDialogText] = useState("");
@@ -46,11 +49,15 @@ const Login = () => {
       if (response.success) {
         cookies.set(
           "user",
-          [response.phone, response.firstname + " " + response.lastname],
+          {
+            type: response.type,
+            phone: response.phone,
+            name: response.firstname + " " + response.lastname,
+          },
           { path: "/" }
         );
 
-        router.push("/employee");
+        router.push("/" + response.type);
       } else {
         setDialogText(
           "Phone number and password combination couldn't be found in the database"
@@ -70,17 +77,13 @@ const Login = () => {
   function handleCloseDialog() {
     setDialogOpen(false);
     setDialogText("");
-
-    if (dialogText.includes("created successfully")) {
-      router.push("/employer");
-    }
   }
 
   return (
     <div>
       <Grid
         container
-        spacing={0}
+        spacing={3}
         direction="column"
         alignItems="center"
         justifyContent="center"

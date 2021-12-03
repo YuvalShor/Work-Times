@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const employeeSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: [true, "Please add a employee type"],
+    enum: ["employee", "employer"],
+    default: "employee",
+  },
   phone: {
     type: String,
     required: [true, "Please add a phone number"],

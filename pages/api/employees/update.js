@@ -1,4 +1,4 @@
-import dbConnect from "../../utils/dbConnect";
+import dbConnect from "../../../utils/dbConnect";
 import EmployeeModel from "../../../models/employeeModel";
 
 export default async (req, res) => {
@@ -19,12 +19,12 @@ export default async (req, res) => {
           } else if (employee.month != currentMonth) {
             employee.month = currentMonth;
             employee.monthlysessions = 1;
-            employee.monthlyhours = req.body.hours;
-          } else {
-            employee.monthlyhours++;
+            employee.monthlyhours = 0;
           }
+
+          employee.monthlyhours++;
         } else {
-          if (req.body.newsession) {
+          if (req.body.newsession && req.body.hours > 0) {
             employee.monthlysessions++;
           }
         }

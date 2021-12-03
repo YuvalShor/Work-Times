@@ -6,35 +6,36 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const WorkSummary = ({ currentSessionTime }) => {
-  const [totalMonthlyHours, setTotalMonthlyHours] = useState(0);
+const WorkSummary = ({ timerValue }) => {
+  const [totalMonthlyHours, setTotalMonthlyHours] = useState();
   const loggedInEmployee = cookies.get("user");
 
   useEffect(async () => {
-    try {
-      const res = await fetch("/api/employees", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          phone: loggedInEmployee.phone,
-          data: "monthlyhours",
-        }),
-      });
+    if (loggedInEmployee) {
+      try {
+        const res = await fetch("/api/employees", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone: loggedInEmployee["phone"],
+            data: "monthlyhours",
+          }),
+        });
 
-      console.log(currentSessionTime);
-
-      const { data: hoursFromDB } = await res.json();
-      console.log(hoursFromDB);
-      setTotalMonthlyHours(
-        parseInt(hoursFromDB) + parseInt(currentSessionTime)
-      );
-    } catch (error) {
-      console.log(error);
+        const { data: hoursFromDB } = await res.json();
+        setTotalMonthlyHours(hoursFromDB);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, []);
+
+  useEffect(() => {
+    setTotalMonthlyHours(totalMonthlyHours + 1);
+  }, [timerValue]);
 
   return (
     <div
@@ -48,7 +49,7 @@ const WorkSummary = ({ currentSessionTime }) => {
         <Grid
           container
           direction="column"
-          style={{ height: "10vh", marginTop: "50%" }}
+          style={{ height: "10vh", marginTop: "10%" }}
         >
           <Typography variant="h6">
             Total work hours this month: {totalMonthlyHours}

@@ -1,4 +1,4 @@
-import dbConnect from "../../utils/dbConnect";
+import dbConnect from "../../../utils/dbConnect";
 import EmployeeModel from "../../../models/employeeModel";
 
 export default async (req, res) => {
@@ -14,17 +14,20 @@ export default async (req, res) => {
             phone: req.body.phone,
           });
 
-          console.log(phone);
-
           if (!employee) {
             res.status(400).json({ success: false });
           } else {
-            console.log(employee.monthlyhours);
             res
               .status(201)
               .json({ success: true, data: employee.monthlyhours });
           }
         } catch (error) {
+          res.status(400).json({ success: false });
+        }
+      } else if (req.body.data === "leftovertime") {
+        const employees = await EmployeeModel.find({});
+
+        if (!employees) {
           res.status(400).json({ success: false });
         }
       } else {

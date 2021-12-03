@@ -1,5 +1,6 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
+import { FormControl } from "@mui/material";
 
 const LoginInputs = ({
   helperText,
@@ -41,26 +42,35 @@ const LoginInputs = ({
 
   return (
     <div>
-      <TextField
-        required
-        label="Phone Number"
-        placeholder="Phone Number"
-        helperText={helperText}
-        name="phone"
-        inputProps={{ inputMode: "numeric" }}
-        onChange={updateFormInputs}
-        value={formInputs.phone}
-      />
-      <TextField
-        required
-        label="Password"
-        type="password"
-        placeholder="Password"
-        helperText="minimum 6 characters"
-        name="password"
-        onChange={updateFormInputs}
-        value={formInputs.password}
-      />
+      <FormControl
+        component="fieldset"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <TextField
+          required
+          label="Phone Number"
+          placeholder="Phone Number"
+          helperText={helperText}
+          name="phone"
+          inputProps={{ inputMode: "numeric" }}
+          onChange={updateFormInputs}
+          value={formInputs.phone}
+        />
+        <TextField
+          required
+          label="Password"
+          type="password"
+          placeholder="Password"
+          helperText="minimum 6 characters"
+          name="password"
+          onChange={updateFormInputs}
+          value={formInputs.password}
+        />
+      </FormControl>
     </div>
   );
 };

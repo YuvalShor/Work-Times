@@ -1,6 +1,5 @@
-import dbConnect from "../../utils/dbConnect";
+import dbConnect from "../../../utils/dbConnect";
 import EmployeeModel from "../../../models/employeeModel";
-import bcrypt from "bcryptjs";
 
 export default async (req, res) => {
   const { method } = req;
@@ -27,7 +26,8 @@ export default async (req, res) => {
           console.log("login successfully");
           res.status(201).json({
             success: true,
-            phone: req.body.phone,
+            type: employee.type,
+            phone: employee.phone,
             firstname: employee.firstname,
             lastname: employee.lastname,
           });

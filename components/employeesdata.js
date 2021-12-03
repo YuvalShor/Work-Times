@@ -28,7 +28,10 @@ const EmployeesData = () => {
       });
 
       const { data: employeesRows } = await res.json();
-      setRows(employeesRows);
+
+      if (employeesRows) {
+        setRows(employeesRows);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -40,12 +43,8 @@ const EmployeesData = () => {
         <Grid
           container
           direction="column"
-          style={{ marginTop: "10%", display: "flex" }}
+          style={{ marginTop: "5%", display: "flex" }}
         >
-          <Grid item style={{ minHeight: "2%", margin: "auto" }}>
-            <Typography variant="h2">Hello Employer!</Typography>
-          </Grid>
-
           <Grid item style={{ minHeight: "2%", margin: "auto" }}>
             <Typography variant="h4">Data for all employees:</Typography>
           </Grid>
@@ -63,7 +62,7 @@ const EmployeesData = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {rows?.map((row) => (
                     <TableRow key={row.phone}>
                       <TableCell component="th" scope="row">
                         {row.phone}

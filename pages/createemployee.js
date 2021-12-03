@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -7,9 +7,27 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import LoginInputs from "../components/logininputs";
 import AlertDialog from "../components/alertdialog";
+import Cookies from "universal-cookie";
+import {
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+} from "@mui/material";
+
+const cookies = new Cookies();
 
 const CreateEmployee = () => {
+  const loggedInEmployee = cookies.get("user");
+
+  useEffect(() => {
+    if (!loggedInEmployee) {
+      console.log("Not logged in, redirecting...");
+      router.push("/login");
+    }
+  }, []);
+  
   const [formInputs, setFormInputs] = useState({
+    type: "employee",
     phone: "",
     password: "",
     firstname: "",
@@ -28,7 +46,13 @@ const CreateEmployee = () => {
   };
 
   const resetForm = () => {
-    setFormInputs({ phone: "", password: "", firstname: "", lastname: "" });
+    setFormInputs({
+      type: "Employee",
+      phone: "",
+      password: "",
+      firstname: "",
+      lastname: "",
+    });
   };
 
   const submitForm = (e) => {
@@ -57,7 +81,9 @@ const CreateEmployee = () => {
 
       if (res.status === 201) {
         setDialogText(
-          "New employee " +
+          "New " +
+            formInputs.type +
+            " " +
             formInputs.firstname +
             " " +
             formInputs.lastname +
@@ -122,6 +148,24 @@ const CreateEmployee = () => {
           }}
           autoComplete="off"
         >
+          <RadioGroup
+            row
+            aria-label="Type"
+            defaultValue="employee"
+            name="type"
+            onChange={updateFormInputs}
+          >
+            <FormControlLabel
+              value="employee"
+              control={<Radio />}
+              label="Employee"
+            />
+            <FormControlLabel
+              value="employer"
+              control={<Radio />}
+              label="Employer"
+            />
+          </RadioGroup>
           <LoginInputs
             helperText={helperText}
             setHelperText={setHelperText}

@@ -2,34 +2,65 @@ import EmployeesData from "../components/employeesdata";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import WorkCounter from "../components/workcounter";
+import WorkSummary from "../components/worksummary";
+import Cookies from "universal-cookie";
+import Typography from "@mui/material/Typography";
+
+const cookies = new Cookies();
 
 const Employer = () => {
+  const [timerValue, setTimerValue] = useState(
+    new Date(new Date().setHours(24, 0, 0, 0))
+  );
+  const loggedInEmployee = cookies.get("user");
   const router = useRouter();
+
+  useEffect(() => {
+    if (!loggedInEmployee) {
+      console.log("Not logged in, redirecting...");
+      router.push("/login");
+    }
+  }, []);
+
   const createEmployee = () => {
     router.push("/createemployee");
   };
 
   return (
     <div spacing={0} direction="column">
-      <div>
-        <Grid>
-          <EmployeesData />
+      <Grid
+        sx={{
+          "&": {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          },
+        }}
+      >
+        <Grid item style={{ minHeight: "2%", margin: "1% auto" }}>
+          <Typography variant="h3" component="div" suppressHydrationWarning>
+            Hello{" "}
+            {loggedInEmployee != null ? loggedInEmployee["name"] : "Employee"}!
+          </Typography>
         </Grid>
-        <Grid
-          sx={{
-            "&": {
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            },
-            "& .MuiButton-root": { width: "25ch", marginTop: "5%" },
-          }}
+        <Grid item>
+          <WorkCounter timerValue={timerValue} setTimerValue={setTimerValue} />
+          <WorkSummary timerValue={timerValue.getHours()} />
+        </Grid>
+
+        <EmployeesData />
+
+        <Button
+          variant="contained"
+          onClick={createEmployee}
+          color="primary"
+          style={{ minHeight: "1%", margin: "2% auto" }}
         >
-          <Button variant="contained" onClick={createEmployee} color="primary">
-            Create New Employee
-          </Button>
-        </Grid>
-      </div>
+          Create New Employee
+        </Button>
+      </Grid>
     </div>
   );
 };
