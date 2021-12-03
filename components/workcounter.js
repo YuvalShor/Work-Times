@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -19,18 +18,21 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
   const loggedInEmployee = cookies.get("user");
 
   useEffect(() => {
-    if (!isActive) return;
-    let intervalID = setInterval(() => {
-      setTimerValue(
-        new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
-      );
+    if (isActive) {
+      let intervalID = setInterval(() => {
+        setTimerValue(
+          new Date(timerValue.setSeconds(timerValue.getSeconds() + 3600))
+        );
 
-      updateHours();
-    }, 1000);
+        updateHours();
+      }, 1000);
 
-    return () => {
-      clearInterval(intervalID);
-    };
+      return () => {
+        clearInterval(intervalID);
+      };
+    } else {
+      toggleWorkingState();
+    }
   }, [isActive]);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
           body: JSON.stringify({
             phone: loggedInEmployee["phone"],
             hours: timerValue.getHours(),
+            working: isActive,
             newsession: newSession,
           }),
         });
@@ -70,6 +73,26 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
         body: JSON.stringify({
           phone: loggedInEmployee["phone"],
           hours: timerValue.getHours(),
+          working: isActive,
+        }),
+      });
+    } catch (error) {
+      console.log(JSON.stringify(loggedInEmployee));
+      console.log(error);
+    }
+  };
+
+  const toggleWorkingState = async () => {
+    try {
+      const res = await fetch("/api/employees/update", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: loggedInEmployee["phone"],
+          working: isActive,
         }),
       });
     } catch (error) {

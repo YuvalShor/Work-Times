@@ -29,6 +29,8 @@ export default async (req, res) => {
           }
         }
 
+        employee.workingstatus = req.body.working ? "Working" : "Not Working";
+
         if (employee.save()) {
           res.status(201).json({ success: true });
         }
