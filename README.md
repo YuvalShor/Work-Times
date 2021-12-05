@@ -1,6 +1,6 @@
-## Work Hours
+## Work Times
 
-Work Hours is a small [Next.js](https://nextjs.org/) project for counting hours of work for employees, and for employers to see the amount of work their employees have done for a certain month.
+Work Times is a small [Next.js](https://nextjs.org/) project for counting hours of work for employees, and for employers to see the amount of work their employees have done for a certain month.
 
 ## How to run this project on your dev environment
 
