@@ -1,3 +1,35 @@
+## Work Hours
+
+Work Hours is a small [Next.js](https://nextjs.org/) project for counting hours of work for employees, and for employers to see the amount of work their employees have done for a certain month.
+
+## How to run this project on your dev environment
+
+- Make sure you have Git and Node.js installed on your machine.
+- Clone this repository to your machine.
+- Install all the required dependencies:
+
+```bash
+npm install
+```
+
+- (Optional) Disable Next.js telemetry by running:
+
+```bash
+npx next telemetry disable
+```
+
+- In your project's root directory, create a new file called `.env.local`, and set the `MONGODB_URI` variable in it with your own MongoDB URI.
+
+- To start running the project locally, run:
+
+```bash
+npm run dev
+```
+
+- The project will run and will be available at `http://localhost:3000`
+
+## About Next.js
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
