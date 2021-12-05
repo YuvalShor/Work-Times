@@ -5,6 +5,7 @@ import WorkSummary from "../components/worksummary";
 import Cookies from "universal-cookie";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 
 const cookies = new Cookies();
 
@@ -22,6 +23,15 @@ const Employee = () => {
   const [timerValue, setTimerValue] = useState(
     new Date(new Date().setHours(24, 0, 0, 0))
   );
+
+  const logOut = () => {
+    if (loggedInEmployee) {
+      cookies.remove("user");
+      console.log("Logging out...");
+    }
+
+    router.push("/login");
+  };
 
   return (
     <div>
@@ -42,6 +52,9 @@ const Employee = () => {
         </Grid>
         <WorkCounter timerValue={timerValue} setTimerValue={setTimerValue} />
         <WorkSummary timerValue={timerValue.getHours()} />
+        <Button variant="contained" onClick={logOut} color="error">
+          Log Out
+        </Button>
       </Grid>
     </div>
   );

@@ -11,6 +11,7 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const Login = () => {
+  const router = useRouter();
   const [formInputs, setFormInputs] = useState({
     phone: "",
     password: "",
@@ -22,8 +23,6 @@ const Login = () => {
   const resetForm = () => {
     setFormInputs({ phone: "", password: "" });
   };
-
-  const router = useRouter();
 
   const submitForm = (e) => {
     const re = /^[0-9\b]{10}$/;

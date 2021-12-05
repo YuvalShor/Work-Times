@@ -28,6 +28,15 @@ const Employer = () => {
     router.push("/createemployee");
   };
 
+  const logOut = () => {
+    if (loggedInEmployee) {
+      cookies.remove("user");
+      console.log("Logging out...");
+    }
+
+    router.push("/login");
+  };
+
   return (
     <div spacing={0} direction="column">
       <Grid
@@ -44,6 +53,16 @@ const Employer = () => {
             Hello{" "}
             {loggedInEmployee != null ? loggedInEmployee["name"] : "Employee"}!
           </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            onClick={logOut}
+            color="error"
+            style={{ minHeight: "1%", margin: "2% auto" }}
+          >
+            Log Out
+          </Button>
         </Grid>
         <Grid item>
           <WorkCounter timerValue={timerValue} setTimerValue={setTimerValue} />
