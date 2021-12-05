@@ -24,12 +24,6 @@ export default async (req, res) => {
         } catch (error) {
           res.status(400).json({ success: false });
         }
-      } else if (req.body.data === "leftovertime") {
-        const employees = await EmployeeModel.find({});
-
-        if (!employees) {
-          res.status(400).json({ success: false });
-        }
       } else {
         try {
           const employees = await EmployeeModel.find({});

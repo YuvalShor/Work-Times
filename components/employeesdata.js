@@ -14,7 +14,9 @@ const EmployeesData = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    getEmployeesData();
+    setInterval(() => {
+      getEmployeesData();
+    }, 1000);
   }, []);
 
   const getEmployeesData = async () => {
@@ -62,21 +64,25 @@ const EmployeesData = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows?.map((row) => (
-                    <TableRow key={row.phone}>
-                      <TableCell component="th" scope="row">
-                        {row.phone}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.firstname + " " + row.lastname}
-                      </TableCell>
-                      <TableCell align="center">{row.monthlyhours}</TableCell>
-                      <TableCell align="center">
-                        {row.monthlysessions}
-                      </TableCell>
-                      <TableCell align="center">{row.workingstatus}</TableCell>
-                    </TableRow>
-                  ))}
+                  {rows?.map((row) => {
+                    return (
+                      <TableRow key={row.phone}>
+                        <TableCell component="th" scope="row">
+                          {row.phone}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.firstname + " " + row.lastname}
+                        </TableCell>
+                        <TableCell align="center">{row.monthlyhours}</TableCell>
+                        <TableCell align="center">
+                          {row.monthlysessions}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.workingstatus}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -14,10 +14,11 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
   const [buttonValue, setButtonValue] = useState("Start Working");
   const [isActive, setIsActive] = useState(false);
   const [newSession, setNewSession] = useState(true);
-
   const loggedInEmployee = cookies.get("user");
 
   useEffect(() => {
+    toggleWorkingState();
+
     if (isActive) {
       let intervalID = setInterval(() => {
         setTimerValue(
@@ -30,13 +31,11 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
       return () => {
         clearInterval(intervalID);
       };
-    } else {
-      toggleWorkingState();
     }
   }, [isActive]);
 
   useEffect(() => {
-    if (!newSession) return;
+    if (!isActive || !newSession) return;
     const updateNewSession = async () => {
       try {
         const res = await fetch("/api/employees/update", {
@@ -47,7 +46,6 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
           },
           body: JSON.stringify({
             phone: loggedInEmployee["phone"],
-            hours: timerValue.getHours(),
             working: isActive,
             newsession: newSession,
           }),
@@ -60,7 +58,7 @@ const WorkCounter = ({ timerValue, setTimerValue }) => {
       }
     };
     updateNewSession();
-  }, [isActive]);
+  }, [isActive, newSession]);
 
   const updateHours = async () => {
     try {

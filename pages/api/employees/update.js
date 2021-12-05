@@ -24,12 +24,12 @@ export default async (req, res) => {
 
           employee.monthlyhours++;
         } else {
-          if (req.body.newsession && req.body.hours > 0) {
+          if (req.body.newsession) {
             employee.monthlysessions++;
           }
-        }
 
-        employee.workingstatus = req.body.working ? "Working" : "Not Working";
+          employee.workingstatus = req.body.working ? "Working" : "Not Working";
+        }
 
         if (employee.save()) {
           res.status(201).json({ success: true });
