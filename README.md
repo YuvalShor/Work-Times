@@ -2,6 +2,10 @@
 
 Work Times is a small [Next.js](https://nextjs.org/) project for counting hours of work for employees, and for employers to see the amount of work their employees have done for a certain month.
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10600102/146667102-d17ab81b-3870-410d-b2a7-da08e8d79e66.png" alt="screenshot" width="50%" />
+</p>
+
 ## How to run this project on your dev environment
 
 - Make sure you have Git and Node.js installed on your machine.
